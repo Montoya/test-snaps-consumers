@@ -1,10 +1,9 @@
 body { background:#fafafa; color:#333; margin:18px; padding:0; font-family:Monaco, Consolas, monospace; }
 #page { width:760px; margin:0 auto; }
-#header { border-bottom:1px solid #333; padding-bottom:6px; font-size:1.5rem; overflow:hidden; }
+#header { border-bottom:1px solid #333; padding-bottom:2px; margin-bottom:2rem; font-size:1.5rem; overflow:hidden; }
 h1, button { font-family:inherit; font-size:inherit; font-weight:bold; display:inline-block; }
-a, a:link, a:visited, a:focus, a:active { color:#88f; }
-a:hover { color:#8f8; }
-button { color: #fff; background:#88f; padding:4px 12px; border-width:0; border-radius: 6px; display:inline-block; }
+a, a:link, a:visited, a:focus, a:hover, a:active { color:rgb(30,150,243); }
+button { color: #fff; background:rgb(30,150,243);; padding:4px 12px; border-width:0; border-radius: 6px; display:inline-block; }
 button:disabled { background:#999; }
 dt { margin-bottom:0.5rem; font-weight:bold; font-size:1.25rem; }
 dd { margin-bottom:1rem; /* assumes only one dd per dt */ }
