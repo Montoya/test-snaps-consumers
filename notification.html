@@ -1,32 +1,32 @@
 <!doctype html>
 <html>
   <head>
-    <title>test-snap-managestate Consumer</title>
+    <title>test-snap-notification Consumer</title>
     <link rel="stylesheet" type="text/css" href="styles.css"/>
   </head>
 
   <body>
     <div id="page">
       <div id="header">
-        <h1>Data dapp example</h1>
+        <h1>Notification dapp example</h1>
         <button id="connect">Connect</button>
       </div>
       <div id="content">
-        <p id="invoker"><button disabled id="get">Get data</button></p>
+        <p id="invoker"><button disabled id="send">Send notification</button></p>
       </div>
     </div>
   </body>
 
   <script>
-    const snapId = 'npm:@metamask/test-snap-managestate'; 
+    const snapId = 'npm:@metamask/test-snap-notification'; 
 
     const content = document.getElementById('content'); 
 
     const connectButton = document.getElementById('connect'); 
-    const getButton = document.getElementById('get'); 
+    const sendButton = document.getElementById('send'); 
 
     connectButton.addEventListener('click', connect); 
-    getButton.addEventListener('click', getData); 
+    sendButton.addEventListener('click', sendNotification); 
 
     // here we get permissions to interact with and install the snap
     async function connect () {
@@ -41,11 +41,11 @@
         console.log(result); 
         // user is now connected, enable the dApp UI
         connectButton.disabled = true; 
-        getButton.disabled = false; 
+        sendButton.disabled = false; 
       }
     }
     
-    async function getData () {
+    async function sendNotification() {
       sendButton.disabled = true; 
       // clear any previous content 
       let children = content.children; 
@@ -56,25 +56,12 @@
         const response = await ethereum.request({
           method: 'wallet_invokeSnap',
           params: [snapId, {
-            method: 'retrieveTestData', 
+            method: 'inApp', 
           }]
         }); 
-        const list = response.testState; 
-        if(list.length < 1) { 
-          let p = document.createElement('p'); 
-          p.textContent = "Empty"; 
-          content.appendChild(p); 
-        }
-        else { 
-          let ol = document.createElement('ol'); 
-          let li; 
-          for(let i=0; i<list.length; i++) { 
-            li = document.createElement('li'); 
-            li.textContent = list[i]; 
-            ol.appendChild(li); 
-          }
-          content.appendChild(ol); 
-        }
+        let p = document.createElement('p'); 
+        p.textContent = response; 
+        content.appendChild(p); 
       } catch (err) {
         let p = document.createElement('p'); 
         p.textContent = err?.message; 
