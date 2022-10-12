@@ -1,0 +1,84 @@
+<!doctype html>
+<html>
+  <head>
+    <title>test-snap-managestate Consumer</title>
+    <link rel="stylesheet" type="text/css" href="styles.css"/>
+  </head>
+
+  <body>
+    <div id="page">
+      <div id="header">
+        <h1>Data Dapp Example</h1>
+        <button id="connect">Connect</button>
+      </div>
+      <div id="content">
+        <p id="invoker"><button disabled id="get">Get Data</button></p>
+      </div>
+    </div>
+  </body>
+
+  <script>
+    const snapId = 'npm:@metamask/test-snap-managestate'; 
+
+    const content = document.getElementById('content'); 
+
+    const connectButton = document.getElementById('connect'); 
+    const getButton = document.getElementById('get'); 
+
+    connectButton.addEventListener('click', connect); 
+    getButton.addEventListener('click', getData); 
+
+    // here we get permissions to interact with and install the snap
+    async function connect () {
+      const result = await ethereum.request({
+        method: 'wallet_enable',
+        params: [{
+          wallet_snap: { [snapId]: {} },
+        }]
+      })
+
+      if(result) { 
+        console.log(result); 
+        // user is now connected, enable the dApp UI
+        connectButton.disabled = true; 
+        getButton.disabled = false; 
+      }
+    }
+    
+    async function getData () {
+      // clear any previous content 
+      let children = content.children; 
+      while(children.length > 1) { 
+        content.removeChild(children[1]); 
+      }
+      try {
+        const response = await ethereum.request({
+          method: 'wallet_invokeSnap',
+          params: [snapId, {
+            method: 'retrieveTestData', 
+          }]
+        }); 
+        const list = response.testState; 
+        if(list.length < 1) { 
+          let p = document.createElement('p'); 
+          p.textContent = "Empty"; 
+          content.appendChild(p); 
+        }
+        else { 
+          let ol = document.createElement('ol'); 
+          let li; 
+          for(let i=0; i<list.length; i++) { 
+            li = document.createElement('li'); 
+            li.textContent = list[i]; 
+            ol.appendChild(li); 
+          }
+          content.appendChild(ol); 
+        }
+      } catch (err) {
+        let p = document.createElement('p'); 
+        p.textContent = err?.message; 
+        content.appendChild(p); 
+      }
+    }
+  </script>
+</html>
