@@ -46,7 +46,7 @@
     }
     
     async function getData () {
-      sendButton.disabled = true; 
+      getButton.disabled = true; 
       // clear any previous content 
       let children = content.children; 
       while(children.length > 1) { 
@@ -80,7 +80,7 @@
         p.textContent = err?.message; 
         content.appendChild(p); 
       }
-      sendButton.disabled = false; 
+      getButton.disabled = false; 
     }
   </script>
 </html>
