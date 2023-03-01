@@ -55,9 +55,12 @@
       try {
         const response = await ethereum.request({
           method: 'wallet_invokeSnap',
-          params: [snapId, {
-            method: 'retrieveTestData', 
-          }]
+          params: { 
+            snapId: snapId, 
+            request: { 
+              method: 'retrieveTestData'
+            }
+          }
         }); 
         const list = response.testState; 
         if(list.length < 1) { 
